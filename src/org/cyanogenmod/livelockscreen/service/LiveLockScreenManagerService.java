@@ -29,9 +29,9 @@ import android.os.UserHandle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import cyanogenmod.app.BaseLiveLockManagerService;
-import cyanogenmod.app.LiveLockScreenInfo;
-import cyanogenmod.providers.CMSettings;
+import mokee.app.BaseLiveLockManagerService;
+import mokee.app.LiveLockScreenInfo;
+import mokee.providers.MKSettings;
 
 import java.util.Objects;
 
@@ -125,8 +125,8 @@ public class LiveLockScreenManagerService extends BaseLiveLockManagerService {
     }
 
     private LiveLockScreenInfo getDefaultLiveLockScreenInternal() {
-        final String defComponent = CMSettings.Secure.getString(getContentResolver(),
-                CMSettings.Secure.DEFAULT_LIVE_LOCK_SCREEN_COMPONENT);
+        final String defComponent = MKSettings.Secure.getString(getContentResolver(),
+                MKSettings.Secure.DEFAULT_LIVE_LOCK_SCREEN_COMPONENT);
 
         if (!TextUtils.isEmpty(defComponent)) {
             return new LiveLockScreenInfo.Builder()
@@ -148,8 +148,8 @@ public class LiveLockScreenManagerService extends BaseLiveLockManagerService {
 
         public void observe() {
             ContentResolver resolver = getContentResolver();
-            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
-                    CMSettings.Secure.LIVE_LOCK_SCREEN_ENABLED), false, this);
+            resolver.registerContentObserver(MKSettings.Secure.getUriFor(
+                    MKSettings.Secure.LIVE_LOCK_SCREEN_ENABLED), false, this);
             onChange(true);
         }
 
@@ -159,8 +159,8 @@ public class LiveLockScreenManagerService extends BaseLiveLockManagerService {
 
         @Override
         public void onChange(boolean selfChange) {
-            mLiveLockScreenEnabled = CMSettings.Secure.getInt(getContentResolver(),
-                    CMSettings.Secure.LIVE_LOCK_SCREEN_ENABLED, 0) == 1;
+            mLiveLockScreenEnabled = MKSettings.Secure.getInt(getContentResolver(),
+                    MKSettings.Secure.LIVE_LOCK_SCREEN_ENABLED, 0) == 1;
             if (!selfChange) {
                 try {
                     notifyChangeListeners(getCurrentLiveLockScreen());
